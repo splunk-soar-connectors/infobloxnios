@@ -1,7 +1,7 @@
 {
     "appid": "ff83fcea-737a-498c-ba81-09b0b097097d",
     "name": "Infoblox NIOS",
-    "description": "This integration enables Splunk SOAR to retrieve IP metadata from Infoblox Grid Manager and manage DNS Firewall protections through RPZs. It allows security teams to define RPZ rules that block DNS resolution for malicious or unauthorized domains, or redirect users to a walled garden by modifying DNS responses.",
+    "description": "This integration enables Splunk SOAR to retrieve IP metadata from Infoblox Grid Manager and manage DNS Firewall protections through RPZs. It allows security teams to define RPZ rules that block DNS resolution for malicious or unauthorized domains, or redirect users to a walled garden by modifying DNS responses",
     "publisher": "Infoblox",
     "package_name": "phantom_infoblox_nios",
     "license": "Copyright 2025 Infoblox Inc.",
@@ -646,7 +646,8 @@
                     "required": true,
                     "contains": [
                         "ip"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "comment": {
                     "description": "Comment for this rule",
@@ -855,39 +856,42 @@
             "read_only": true,
             "parameters": {
                 "ip_address": {
-                    "description": "The IP address for which to retrieve information, e.g. \"192.168.1.1\". Cannot be used in conjunction with network or from/to_ip arguments.",
+                    "description": "The IP address for which to retrieve information, e.g. \"192.168.1.1\". Cannot be used in conjunction with network or from/to_ip arguments",
                     "data_type": "string",
                     "order": 0,
                     "contains": [
                         "ip",
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "network": {
-                    "description": "The network that the IP belongs to is in FQDN/CIDR format, e.g. \"192.168.1.0/24\". Cannot be used in conjunction with ip or from/to_ip arguments.",
+                    "description": "The network that the IP belongs to is in FQDN/CIDR format, e.g. \"192.168.1.0/24\". Cannot be used in conjunction with ip or from/to_ip arguments",
                     "data_type": "string",
                     "order": 1
                 },
                 "from_ip": {
-                    "description": "The beginning of the IP range, e.g. \"192.168.1.0\". Must be used in conjunction with to_ip.",
+                    "description": "The beginning of the IP range, e.g. \"192.168.1.0\". Must be used in conjunction with to_ip",
                     "data_type": "string",
                     "order": 2,
                     "contains": [
                         "ip",
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "to_ip": {
-                    "description": "The end of the IP range, e.g. \"192.168.1.254\". Must be used in conjunction with from_ip.",
+                    "description": "The end of the IP range, e.g. \"192.168.1.254\". Must be used in conjunction with from_ip",
                     "data_type": "string",
                     "order": 3,
                     "contains": [
                         "ip",
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "status": {
-                    "description": "The status of the IP device. Used in conjunction with the network or ip argument. Possible values are ACTIVE, UNUSED and USED.",
+                    "description": "The status of the IP device. Used in conjunction with the network or ip argument. Possible values are ACTIVE, UNUSED and USED",
                     "data_type": "string",
                     "order": 4,
                     "required": true,
@@ -900,12 +904,12 @@
                     ]
                 },
                 "extended_attributes": {
-                    "description": "Comma-separated key/value formatted filter for extended attributes, e.g. \"Site=New York,OtherProp=MyValue\".",
+                    "description": "Comma-separated key/value formatted filter for extended attributes, e.g. \"Site=New York,OtherProp=MyValue\"",
                     "data_type": "string",
                     "order": 5
                 },
                 "limit": {
-                    "description": "Maximum numbers of objects to be returned.",
+                    "description": "Maximum numbers of objects to be returned",
                     "data_type": "numeric",
                     "order": 6,
                     "default": 100
@@ -1200,7 +1204,8 @@
                     "order": 1,
                     "contains": [
                         "ip"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "ipv6_address": {
                     "description": "IPv6 address information",
@@ -1208,7 +1213,8 @@
                     "order": 2,
                     "contains": [
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "limit": {
                     "description": "Maximum numbers of objects to be returned",
@@ -1425,7 +1431,7 @@
                 {
                     "data_path": "action_result.data.*.ipv4addrs_display",
                     "data_type": "string",
-                    "column_name": "Ipv4addrs",
+                    "column_name": "Ipv4Addrs",
                     "column_order": 4,
                     "example_values": [
                         "192.168.1.100",
@@ -1464,7 +1470,7 @@
                 {
                     "data_path": "action_result.data.*.ipv6addrs_display",
                     "data_type": "string",
-                    "column_name": "Ipv6addrs",
+                    "column_name": "Ipv6Addrs",
                     "column_order": 5,
                     "example_values": [
                         "2001:db8::1",
@@ -2295,37 +2301,40 @@
             "read_only": true,
             "parameters": {
                 "ip_address": {
-                    "description": "Lease IP address (IPv4 or IPv6).",
+                    "description": "Lease IP address (IPv4 or IPv6)",
                     "data_type": "string",
                     "order": 0,
                     "contains": [
                         "ip",
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "hardware": {
-                    "description": "MAC address for IPv4 leases. Regex or exact search supported.",
+                    "description": "MAC address for IPv4 leases. Regex or exact search supported",
                     "data_type": "string",
                     "order": 1,
                     "contains": [
                         "mac address"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "hostname": {
-                    "description": "Hostname sent via DHCP option 12. Regex/exact search.",
+                    "description": "Hostname sent via DHCP option 12. Regex/exact search",
                     "data_type": "string",
                     "order": 2,
                     "contains": [
                         "host name"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "ipv6_duid": {
-                    "description": "IPv6 DUID identifier for IPv6 leases. Regex/exact search.",
+                    "description": "IPv6 DUID identifier for IPv6 leases. Regex/exact search",
                     "data_type": "string",
                     "order": 3
                 },
                 "protocol": {
-                    "description": "One of: BOTH, IPV4, IPV6; exact match only.",
+                    "description": "One of: BOTH, IPV4, IPV6; exact match only",
                     "data_type": "string",
                     "order": 4,
                     "default": "BOTH",
@@ -2336,17 +2345,17 @@
                     ]
                 },
                 "fingerprint": {
-                    "description": "DHCP client fingerprint; case\u00e2\u20ac\u2018insensitive or regex search.",
+                    "description": "DHCP client fingerprint; case\u00e2\u20ac\u2018insensitive or regex search",
                     "data_type": "string",
                     "order": 5
                 },
                 "username": {
-                    "description": "User associated with lease request; case-insensitive/regex search.",
+                    "description": "User associated with lease request; case-insensitive/regex search",
                     "data_type": "string",
                     "order": 6
                 },
                 "limit": {
-                    "description": "Maximum numbers of objects to be returned.",
+                    "description": "Maximum numbers of objects to be returned",
                     "data_type": "numeric",
                     "order": 7,
                     "default": 100
@@ -2612,10 +2621,7 @@
                 },
                 {
                     "data_path": "action_result.data.*.variable",
-                    "data_type": "string",
-                    "example_values": [
-                        ""
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.summary",
@@ -3139,7 +3145,8 @@
                     "required": true,
                     "contains": [
                         "ipv6"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "comment": {
                     "description": "Comment for this rule",
@@ -3597,7 +3604,8 @@
                     "contains": [
                         "ip"
                     ],
-                    "order": 4
+                    "order": 4,
+                    "primary": true
                 },
                 "ipv6_address": {
                     "description": "The IPv6 address of the substitute rule",
@@ -3605,7 +3613,8 @@
                     "contains": [
                         "ipv6"
                     ],
-                    "order": 5
+                    "order": 5,
+                    "primary": true
                 },
                 "additional_parameters": {
                     "description": "JSON object containing additional parameters to create response policy zone (disable, extattrs, ttl, use_ttl, view)",
@@ -4030,7 +4039,8 @@
                     "contains": [
                         "fqdn"
                     ],
-                    "order": 0
+                    "order": 0,
+                    "primary": true
                 },
                 "ipv4_addresses": {
                     "description": "JSON array of IPv4 address objects. Each object must contain 'ipv4addr' and can optionally include 'mac', 'configure_for_dhcp', etc. Example: [{\"ipv4addr\":\"192.168.1.10\",\"mac\":\"00:11:22:33:44:55\"}]",
@@ -4372,7 +4382,7 @@
             "read_only": false,
             "parameters": {
                 "reference_id": {
-                    "description": "The reference ID of the response policy zone.",
+                    "description": "The reference ID of the response policy zone",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -4456,7 +4466,7 @@
             "read_only": false,
             "parameters": {
                 "fqdn": {
-                    "description": "The name of this DNS zone in FQDN format.",
+                    "description": "The name of this DNS zone in FQDN format",
                     "data_type": "string",
                     "primary": true,
                     "required": true,
@@ -4466,17 +4476,17 @@
                     "order": 0
                 },
                 "substitute_name": {
-                    "description": "The alternative name of the redirect target is a substitute response policy zone.",
+                    "description": "The alternative name of the redirect target is a substitute response policy zone",
                     "data_type": "string",
                     "order": 1
                 },
                 "comment": {
-                    "description": "Comment for the zone.",
+                    "description": "Comment for the zone",
                     "data_type": "string",
                     "order": 2
                 },
                 "rpz_policy": {
-                    "description": "The override policy of the response policy zone.",
+                    "description": "The override policy of the response policy zone",
                     "data_type": "string",
                     "value_list": [
                         "DISABLED",
@@ -4490,7 +4500,7 @@
                     "order": 3
                 },
                 "rpz_severity": {
-                    "description": "The severity of the response policy zone.",
+                    "description": "The severity of the response policy zone",
                     "data_type": "string",
                     "value_list": [
                         "CRITICAL",
@@ -4502,7 +4512,7 @@
                     "order": 4
                 },
                 "rpz_type": {
-                    "description": "The type of the RPZ.",
+                    "description": "The type of the RPZ",
                     "data_type": "string",
                     "value_list": [
                         "FEED",
@@ -4513,12 +4523,12 @@
                     "order": 5
                 },
                 "fireeye_rule_mapping": {
-                    "description": "Rules to map fireeye alerts.",
+                    "description": "Rules to map fireeye alerts",
                     "data_type": "string",
                     "order": 6
                 },
                 "additional_parameters": {
-                    "description": "JSON object containing additional parameters to create response policy zone.",
+                    "description": "JSON object containing additional parameters to create response policy zone",
                     "data_type": "string",
                     "order": 7
                 }
@@ -4992,7 +5002,7 @@
             "read_only": true,
             "parameters": {
                 "fqdn": {
-                    "description": "The fully qualified domain name of the response policy zone to retrieve.",
+                    "description": "The fully qualified domain name of the response policy zone to retrieve",
                     "data_type": "string",
                     "primary": true,
                     "contains": [
@@ -5001,17 +5011,17 @@
                     "order": 0
                 },
                 "view": {
-                    "description": "Filter by DNS view name.",
+                    "description": "Filter by DNS view name",
                     "data_type": "string",
                     "order": 1
                 },
                 "comment": {
-                    "description": "Filter by comment text.",
+                    "description": "Filter by comment text",
                     "data_type": "string",
                     "order": 2
                 },
                 "max_results": {
-                    "description": "Maximum number of results to return.",
+                    "description": "Maximum number of results to return",
                     "data_type": "numeric",
                     "default": 100,
                     "order": 3
@@ -5456,7 +5466,8 @@
                     "order": 1,
                     "contains": [
                         "domain name"
-                    ]
+                    ],
+                    "primary": true
                 },
                 "output_fields": {
                     "description": "The comma-separated fields to include in the returned object (e.g., address, comment, etc.)",

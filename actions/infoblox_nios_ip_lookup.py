@@ -103,7 +103,7 @@ class IpLookupAction(BaseAction):
         # Validate limit parameter using common validator
         limit = self._param.get("limit")
         if limit is not None:
-            ret_val, validated_limit = self._connector.validator.validate_integer(
+            ret_val, _validated_limit = self._connector.validator.validate_integer(
                 self._action_result,
                 limit,
                 "limit",

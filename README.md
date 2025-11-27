@@ -6,7 +6,7 @@ Product Vendor: Infoblox <br>
 Product Name: Infoblox NIOS <br>
 Minimum Product Version: 6.4.1
 
-This integration enables Splunk SOAR to retrieve IP metadata from Infoblox Grid Manager and manage DNS Firewall protections through RPZs. It allows security teams to define RPZ rules that block DNS resolution for malicious or unauthorized domains, or redirect users to a walled garden by modifying DNS responses.
+This integration enables Splunk SOAR to retrieve IP metadata from Infoblox Grid Manager and manage DNS Firewall protections through RPZs. It allows security teams to define RPZ rules that block DNS resolution for malicious or unauthorized domains, or redirect users to a walled garden by modifying DNS responses
 
 ______________________________________________________________________
 
@@ -229,13 +229,13 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**ip_address** | optional | The IP address for which to retrieve information, e.g. "192.168.1.1". Cannot be used in conjunction with network or from/to_ip arguments. | string | `ip` `ipv6` |
-**network** | optional | The network that the IP belongs to is in FQDN/CIDR format, e.g. "192.168.1.0/24". Cannot be used in conjunction with ip or from/to_ip arguments. | string | |
-**from_ip** | optional | The beginning of the IP range, e.g. "192.168.1.0". Must be used in conjunction with to_ip. | string | `ip` `ipv6` |
-**to_ip** | optional | The end of the IP range, e.g. "192.168.1.254". Must be used in conjunction with from_ip. | string | `ip` `ipv6` |
-**status** | required | The status of the IP device. Used in conjunction with the network or ip argument. Possible values are ACTIVE, UNUSED and USED. | string | |
-**extended_attributes** | optional | Comma-separated key/value formatted filter for extended attributes, e.g. "Site=New York,OtherProp=MyValue". | string | |
-**limit** | optional | Maximum numbers of objects to be returned. | numeric | |
+**ip_address** | optional | The IP address for which to retrieve information, e.g. "192.168.1.1". Cannot be used in conjunction with network or from/to_ip arguments | string | `ip` `ipv6` |
+**network** | optional | The network that the IP belongs to is in FQDN/CIDR format, e.g. "192.168.1.0/24". Cannot be used in conjunction with ip or from/to_ip arguments | string | |
+**from_ip** | optional | The beginning of the IP range, e.g. "192.168.1.0". Must be used in conjunction with to_ip | string | `ip` `ipv6` |
+**to_ip** | optional | The end of the IP range, e.g. "192.168.1.254". Must be used in conjunction with from_ip | string | `ip` `ipv6` |
+**status** | required | The status of the IP device. Used in conjunction with the network or ip argument. Possible values are ACTIVE, UNUSED and USED | string | |
+**extended_attributes** | optional | Comma-separated key/value formatted filter for extended attributes, e.g. "Site=New York,OtherProp=MyValue" | string | |
+**limit** | optional | Maximum numbers of objects to be returned | numeric | |
 
 #### Action Output
 
@@ -474,14 +474,14 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**ip_address** | optional | Lease IP address (IPv4 or IPv6). | string | `ip` `ipv6` |
-**hardware** | optional | MAC address for IPv4 leases. Regex or exact search supported. | string | `mac address` |
-**hostname** | optional | Hostname sent via DHCP option 12. Regex/exact search. | string | `host name` |
-**ipv6_duid** | optional | IPv6 DUID identifier for IPv6 leases. Regex/exact search. | string | |
-**protocol** | optional | One of: BOTH, IPV4, IPV6; exact match only. | string | |
-**fingerprint** | optional | DHCP client fingerprint; caseâ€‘insensitive or regex search. | string | |
-**username** | optional | User associated with lease request; case-insensitive/regex search. | string | |
-**limit** | optional | Maximum numbers of objects to be returned. | numeric | |
+**ip_address** | optional | Lease IP address (IPv4 or IPv6) | string | `ip` `ipv6` |
+**hardware** | optional | MAC address for IPv4 leases. Regex or exact search supported | string | `mac address` |
+**hostname** | optional | Hostname sent via DHCP option 12. Regex/exact search | string | `host name` |
+**ipv6_duid** | optional | IPv6 DUID identifier for IPv6 leases. Regex/exact search | string | |
+**protocol** | optional | One of: BOTH, IPV4, IPV6; exact match only | string | |
+**fingerprint** | optional | DHCP client fingerprint; caseâ€‘insensitive or regex search | string | |
+**username** | optional | User associated with lease request; case-insensitive/regex search | string | |
+**limit** | optional | Maximum numbers of objects to be returned | numeric | |
 
 #### Action Output
 
@@ -875,7 +875,7 @@ Read only: **False**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**reference_id** | required | The reference ID of the response policy zone. | string | `rpz` |
+**reference_id** | required | The reference ID of the response policy zone | string | `rpz` |
 
 #### Action Output
 
@@ -902,14 +902,14 @@ Read only: **False**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**fqdn** | required | The name of this DNS zone in FQDN format. | string | `fqdn` |
-**substitute_name** | optional | The alternative name of the redirect target is a substitute response policy zone. | string | |
-**comment** | optional | Comment for the zone. | string | |
-**rpz_policy** | optional | The override policy of the response policy zone. | string | |
-**rpz_severity** | optional | The severity of the response policy zone. | string | |
-**rpz_type** | optional | The type of the RPZ. | string | |
-**fireeye_rule_mapping** | optional | Rules to map fireeye alerts. | string | |
-**additional_parameters** | optional | JSON object containing additional parameters to create response policy zone. | string | |
+**fqdn** | required | The name of this DNS zone in FQDN format | string | `fqdn` |
+**substitute_name** | optional | The alternative name of the redirect target is a substitute response policy zone | string | |
+**comment** | optional | Comment for the zone | string | |
+**rpz_policy** | optional | The override policy of the response policy zone | string | |
+**rpz_severity** | optional | The severity of the response policy zone | string | |
+**rpz_type** | optional | The type of the RPZ | string | |
+**fireeye_rule_mapping** | optional | Rules to map fireeye alerts | string | |
+**additional_parameters** | optional | JSON object containing additional parameters to create response policy zone | string | |
 
 #### Action Output
 
@@ -987,10 +987,10 @@ Read only: **True**
 
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**fqdn** | optional | The fully qualified domain name of the response policy zone to retrieve. | string | `fqdn` |
-**view** | optional | Filter by DNS view name. | string | |
-**comment** | optional | Filter by comment text. | string | |
-**max_results** | optional | Maximum number of results to return. | numeric | |
+**fqdn** | optional | The fully qualified domain name of the response policy zone to retrieve | string | `fqdn` |
+**view** | optional | Filter by DNS view name | string | |
+**comment** | optional | Filter by comment text | string | |
+**max_results** | optional | Maximum number of results to return | numeric | |
 
 #### Action Output
 
