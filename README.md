@@ -1,7 +1,7 @@
 # Infoblox NIOS
 
 Publisher: Infoblox <br>
-Connector Version: 2.0.0 <br>
+Connector Version: 1.0.0 <br>
 Product Vendor: Infoblox <br>
 Product Name: Infoblox NIOS <br>
 Minimum Product Version: 6.4.1
