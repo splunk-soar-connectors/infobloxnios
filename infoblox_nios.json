@@ -19,7 +19,7 @@
     "latest_tested_versions": [
         "Infoblox v2.13.1 (9.0.x)"
     ],
-    "python_version": "3",
+    "python_version": "3.9, 3.13",
     "configuration": {
         "url": {
             "required": true,
