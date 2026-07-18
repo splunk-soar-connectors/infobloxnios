@@ -67,6 +67,13 @@ class DeleteResponsePolicyZoneAction(BaseAction):
         # Step 1: Log action start
         self.__log_action_start()
 
+        reference_id = self._param["reference_id"]
+        if not isinstance(reference_id, str) or not reference_id.startswith("zone_rp/"):
+            return self._action_result.set_status(
+                phantom.APP_ERROR,
+                "'reference_id' must identify a zone_rp object",
+            )
+
         # Step 2: Make API call to delete response policy zone
         status, response = self.__make_api_call()
 

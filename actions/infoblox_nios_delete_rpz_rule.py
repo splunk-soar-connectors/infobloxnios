@@ -68,6 +68,11 @@ class DeleteRPZRuleAction(BaseAction):
 
         # Step 2: get parameter
         reference_id = self._param["ref"]
+        if not isinstance(reference_id, str) or not reference_id.startswith("record:rpz:"):
+            return self._action_result.set_status(
+                phantom.APP_ERROR,
+                "'ref' must identify a record:rpz:* object",
+            )
         # Store the reference ID as an instance attribute
         self._ref = reference_id
 

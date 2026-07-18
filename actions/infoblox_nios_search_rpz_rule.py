@@ -19,6 +19,24 @@ import infoblox_nios_consts as consts
 from actions import BaseAction
 
 
+ALLOWED_OBJECT_TYPES = {
+    "record:rpz:a",
+    "record:rpz:a:ipaddress",
+    "record:rpz:aaaa",
+    "record:rpz:aaaa:ipaddress",
+    "record:rpz:cname",
+    "record:rpz:cname:clientipaddress",
+    "record:rpz:cname:clientipaddressdn",
+    "record:rpz:cname:ipaddress",
+    "record:rpz:cname:ipaddressdn",
+    "record:rpz:mx",
+    "record:rpz:naptr",
+    "record:rpz:ptr",
+    "record:rpz:srv",
+    "record:rpz:txt",
+}
+
+
 class SearchRPZRuleAction(BaseAction):
     """Search RPZ Rule action."""
 
@@ -39,6 +57,13 @@ class SearchRPZRuleAction(BaseAction):
         Returns:
             int: phantom.APP_SUCCESS if validation passes, phantom.APP_ERROR otherwise
         """
+        object_type = self._param.get("object_type")
+        if object_type not in ALLOWED_OBJECT_TYPES:
+            return self._action_result.set_status(
+                phantom.APP_ERROR,
+                "'object_type' must be one of the documented record:rpz:* values",
+            )
+
         limit = self._param.get("limit")
         if limit is not None:
             ret_val, limit = self._connector.validator.validate_integer(
