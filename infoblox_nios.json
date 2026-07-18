@@ -4,7 +4,7 @@
     "description": "This integration enables Splunk SOAR to retrieve IP metadata from Infoblox Grid Manager and manage DNS Firewall protections through RPZs. It allows security teams to define RPZ rules that block DNS resolution for malicious or unauthorized domains, or redirect users to a walled garden by modifying DNS responses",
     "publisher": "Infoblox",
     "package_name": "phantom_infoblox_nios",
-    "license": "Copyright 2025 Infoblox Inc.",
+    "license": "Copyright 2025-2026 Infoblox Inc.",
     "main_module": "infoblox_nios_connector.py",
     "type": "network security",
     "app_version": "1.0.0",
