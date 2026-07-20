@@ -1,6 +1,6 @@
 # File: infoblox_nios_connector.py
 #
-# Copyright 2025 Infoblox Inc.
+# Copyright 2025-2026 Infoblox Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class InfobloxNIOSConnector(BaseConnector):
         self._username = None
         self._password = None
         self.validator = None
-        self._verify = False
+        self._verify = True
         self._session_id = None
         self.utils = None
         self.validator = None
@@ -62,7 +62,7 @@ class InfobloxNIOSConnector(BaseConnector):
         self._url = config[consts.CONFIG_URL]
         self._username = config[consts.CONFIG_USERNAME]
         self._password = config[consts.CONFIG_PASSWORD]
-        self._verify = config.get(consts.CONFIG_VERIFY_SERVER_CERT, False)
+        self._verify = config.get(consts.CONFIG_VERIFY_SERVER_CERT, True)
 
         # Initialize utility and validator objects
         self.utils = InfobloxNIOSUtils(self)

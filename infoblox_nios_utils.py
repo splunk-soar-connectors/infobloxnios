@@ -1,6 +1,6 @@
 # File: infoblox_nios_utils.py
 #
-# Copyright 2025 Infoblox Inc.
+# Copyright 2025-2026 Infoblox Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 
 import ipaddress
 import json
+import math
 
 import phantom.app as phantom
 import requests
@@ -369,11 +370,25 @@ class InfobloxNIOSUtils:
         # Initialize results collection and pagination tracking
         all_results = []
         page_id = None
+        seen_page_ids = set()
+        expected_page_size = max(1, min(page_size, limit))
+        max_page_count = math.ceil(limit / expected_page_size) + 2
+        page_count = 0
 
         self._connector.debug_print(f"Starting paginated REST call to {endpoint}, limit: {limit}")
 
         # Fetch pages until we have enough results or no more pages available
         while True:
+            if page_count >= max_page_count:
+                return RetVal(
+                    action_result.set_status(
+                        phantom.APP_ERROR,
+                        f"Stopped pagination after the maximum of {max_page_count} pages",
+                    ),
+                    None,
+                )
+            page_count += 1
+
             # Add page_id parameter if we're fetching subsequent pages
             if page_id:
                 paginated_params["_page_id"] = page_id
@@ -404,13 +419,33 @@ class InfobloxNIOSUtils:
             if isinstance(response, dict):
                 # Response is in object format with result array and pagination info
                 page_results = response.get("result", [])
-                page_id = response.get("next_page_id")
-                self._connector.debug_print(f"Received {len(page_results)} results, next_page_id: {page_id}")
+                next_page_id = response.get("next_page_id")
+                self._connector.debug_print(f"Received {len(page_results)} results, next_page_id: {next_page_id}")
             else:
                 # Response is in array format (fallback for non-paginated responses)
                 page_results = response if isinstance(response, list) else [response]
-                page_id = None
+                next_page_id = None
                 self._connector.debug_print(f"Received non-object response with {len(page_results)} results")
+
+            if next_page_id and not page_results:
+                return RetVal(
+                    action_result.set_status(
+                        phantom.APP_ERROR,
+                        "Stopped pagination because the server returned an empty page with next_page_id",
+                    ),
+                    None,
+                )
+            if next_page_id in seen_page_ids:
+                return RetVal(
+                    action_result.set_status(
+                        phantom.APP_ERROR,
+                        "Stopped pagination because the server repeated next_page_id",
+                    ),
+                    None,
+                )
+            if next_page_id:
+                seen_page_ids.add(next_page_id)
+            page_id = next_page_id
 
             # Add current page results to our collection
             all_results.extend(page_results)
