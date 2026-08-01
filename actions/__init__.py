@@ -43,9 +43,23 @@ class BaseAction:
             return False
 
         segments = reference_id.split("/")
-        prefix_matches = segments[0].startswith(expected_prefix) if expected_prefix.endswith(":") else segments[0] == expected_prefix
-        if len(segments) < 2 or not prefix_matches:
+        if len(segments) < 2:
             return False
 
-        decoded_segments = [unquote(unquote(segment)) for segment in segments]
-        return all(segment not in {"", ".", ".."} for segment in decoded_segments)
+        decoded_segments = []
+        for segment in segments:
+            decoded = segment
+            for _ in range(5):
+                next_value = unquote(decoded)
+                if next_value == decoded:
+                    break
+                decoded = next_value
+
+            if decoded in {"", ".", ".."} or any(char in decoded for char in "/\\?#%") or any(ord(char) < 32 for char in decoded):
+                return False
+            decoded_segments.append(decoded)
+
+        prefix_matches = (
+            decoded_segments[0].startswith(expected_prefix) if expected_prefix.endswith(":") else decoded_segments[0] == expected_prefix
+        )
+        return prefix_matches
