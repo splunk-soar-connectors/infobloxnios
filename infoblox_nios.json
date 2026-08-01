@@ -4522,15 +4522,21 @@
                     "default": "LOCAL",
                     "order": 5
                 },
+                "ns_group": {
+                    "description": "Name server group that serves the response policy zone",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 6
+                },
                 "fireeye_rule_mapping": {
                     "description": "Rules to map fireeye alerts",
                     "data_type": "string",
-                    "order": 6
+                    "order": 7
                 },
                 "additional_parameters": {
                     "description": "JSON object containing additional parameters to create response policy zone",
                     "data_type": "string",
-                    "order": 7
+                    "order": 8
                 }
             },
             "output": [
@@ -4571,6 +4577,13 @@
                     ],
                     "contains": [
                         "fqdn"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.ns_group",
+                    "data_type": "string",
+                    "example_values": [
+                        "default"
                     ]
                 },
                 {

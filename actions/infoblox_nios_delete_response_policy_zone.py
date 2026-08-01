@@ -68,7 +68,7 @@ class DeleteResponsePolicyZoneAction(BaseAction):
         self.__log_action_start()
 
         reference_id = self._param["reference_id"]
-        if not isinstance(reference_id, str) or not reference_id.startswith("zone_rp/"):
+        if not self.is_valid_reference(reference_id, "zone_rp"):
             return self._action_result.set_status(
                 phantom.APP_ERROR,
                 "'reference_id' must identify a zone_rp object",

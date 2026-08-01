@@ -908,6 +908,7 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **rpz_policy** | optional | The override policy of the response policy zone | string | |
 **rpz_severity** | optional | The severity of the response policy zone | string | |
 **rpz_type** | optional | The type of the RPZ | string | |
+**ns_group** | required | Name server group that serves the response policy zone | string | |
 **fireeye_rule_mapping** | optional | Rules to map fireeye alerts | string | |
 **additional_parameters** | optional | JSON object containing additional parameters to create response policy zone | string | |
 
@@ -920,6 +921,7 @@ action_result.parameter.additional_parameters | string | | {"disable": false, "v
 action_result.parameter.comment | string | | Security RPZ for malware domains |
 action_result.parameter.fireeye_rule_mapping | string | | {"malware": "block", "phishing": "redirect"} |
 action_result.parameter.fqdn | string | `fqdn` | rpz.security.local |
+action_result.parameter.ns_group | string | | default |
 action_result.parameter.rpz_policy | string | | GIVEN NXDOMAIN SUBSTITUTE |
 action_result.parameter.rpz_severity | string | | MAJOR CRITICAL WARNING |
 action_result.parameter.rpz_type | string | | LOCAL FEED FIREEYE |

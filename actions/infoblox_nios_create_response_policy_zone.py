@@ -47,7 +47,7 @@ class CreateResponsePolicyZoneAction(BaseAction):
         fqdn = self._param["fqdn"]
 
         # Initialize the payload with the required parameter
-        payload = {"fqdn": fqdn}
+        payload = {"fqdn": fqdn, "ns_group": self._param["ns_group"]}
 
         # Validate and add RPZ Policy
         rpz_policy = self._param.get("rpz_policy")
@@ -106,6 +106,9 @@ class CreateResponsePolicyZoneAction(BaseAction):
             except json.JSONDecodeError:
                 return phantom.APP_ERROR, None, consts.CREATE_RPZ_INVALID_JSON_ERROR.format(field="additional_parameters")
 
+        if not any(payload.get(field) for field in ("grid_primary", "grid_secondaries", "ns_group")):
+            return phantom.APP_ERROR, None, "A serving DNS member assignment is required"
+
         return phantom.APP_SUCCESS, payload, None
 
     def __make_api_call(self, payload):
@@ -126,6 +129,9 @@ class CreateResponsePolicyZoneAction(BaseAction):
         :param response: The API response
         :return: status (success/failure)
         """
+        if not any(response.get(field) for field in ("grid_primary", "grid_secondaries", "ns_group")):
+            return self._action_result.set_status(phantom.APP_ERROR, "Created zone has no serving DNS member")
+
         # Add the response data to the action result
         self._action_result.add_data(response)
 
