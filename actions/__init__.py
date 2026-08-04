@@ -13,6 +13,8 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 
+from urllib.parse import unquote
+
 from phantom.action_result import ActionResult
 
 
@@ -28,3 +30,36 @@ class BaseAction:
         self._connector = connector
         self._action_result = connector.add_action_result(ActionResult(dict(param)))
         self._param = param
+
+    @staticmethod
+    def is_valid_reference(reference_id, expected_prefix):
+        """Validate an Infoblox object reference before using it as a URL path."""
+        if (
+            not isinstance(reference_id, str)
+            or "\\" in reference_id
+            or any(char in reference_id for char in "?#")
+            or any(ord(char) < 32 for char in reference_id)
+        ):
+            return False
+
+        segments = reference_id.split("/")
+        if len(segments) < 2:
+            return False
+
+        decoded_segments = []
+        for segment in segments:
+            decoded = segment
+            for _ in range(5):
+                next_value = unquote(decoded)
+                if next_value == decoded:
+                    break
+                decoded = next_value
+
+            if decoded in {"", ".", ".."} or any(char in decoded for char in "/\\?#%") or any(ord(char) < 32 for char in decoded):
+                return False
+            decoded_segments.append(decoded)
+
+        prefix_matches = (
+            decoded_segments[0].startswith(expected_prefix) if expected_prefix.endswith(":") else decoded_segments[0] == expected_prefix
+        )
+        return prefix_matches

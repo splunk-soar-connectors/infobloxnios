@@ -331,7 +331,51 @@ class InfobloxNIOSUtils:
             self._connector.debug_print(f"{consts.EXCEPTION_OCCURRED}: {error_message}")
             return RetVal(action_result.set_status(phantom.APP_ERROR, f"Error connecting to server. {error_message}"), None)
 
-        return self._process_response(response, action_result)
+        result = self._process_response(response, action_result)
+        if phantom.is_fail(result[0]):
+            return result
+
+        is_rpz_mutation = method != "get" and (endpoint.startswith("/zone_rp") or endpoint.startswith("/record:rpz:"))
+        if not is_rpz_mutation:
+            return result
+
+        if endpoint == consts.CREATE_RPZ_ENDPOINT and method == "post":
+            response_data = result[1]
+            if not isinstance(response_data, dict) or not any(
+                response_data.get(field) for field in ("grid_primary", "grid_secondaries", "ns_group")
+            ):
+                return RetVal(action_result.set_status(phantom.APP_ERROR, "Created zone has no serving DNS member"), None)
+
+        restart_status = self._restart_dns_services(action_result)
+        if phantom.is_fail(restart_status):
+            return RetVal(action_result.get_status(), None)
+
+        return result
+
+    def _restart_dns_services(self, action_result):
+        """Publish pending RPZ mutations to the DNS service."""
+        status, grids = self.make_rest_call("/grid", action_result, params={"_return_fields": "_ref"})
+        if phantom.is_fail(status):
+            return action_result.get_status()
+
+        if not isinstance(grids, list) or len(grids) != 1 or not isinstance(grids[0], dict):
+            return action_result.set_status(phantom.APP_ERROR, "Unable to identify a unique Infoblox grid for DNS restart")
+
+        grid_reference = grids[0].get("_ref")
+        if not isinstance(grid_reference, str) or not grid_reference.startswith("grid/"):
+            return action_result.set_status(phantom.APP_ERROR, "Infoblox grid response did not include a valid reference")
+
+        status, _ = self.make_rest_call(
+            f"/{grid_reference}",
+            action_result,
+            method="post",
+            params={"_function": "restartservices"},
+            data={"restart_option": "RESTART_IF_NEEDED", "service_option": "DNS"},
+        )
+        if phantom.is_fail(status):
+            return action_result.get_status()
+
+        return phantom.APP_SUCCESS
 
     def make_paginated_rest_call(
         self, endpoint, action_result, params=None, data=None, headers=None, method="get", timeout=None, limit=None, page_size=None
