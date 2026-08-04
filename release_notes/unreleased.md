@@ -1,6 +1,1 @@
 **Unreleased**
-
-* Validate complete RPZ object references before delete operations
-* Reject encoded separators and nested traversal in RPZ object references
-* Require a serving DNS member for new response policy zones
-* Restart DNS services after successful RPZ mutations
